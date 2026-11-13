@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEW EDEN — 위상 개발 해상 학원도시</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Orbitron:wght@500;700;900&display=swap">
+<style>
+:root{
+  --bg:#060b14; --bg2:#0a1220; --panel:#0e1828; --panel2:#122036; --line:#1d2f4a; --line2:#27406a;
+  --fg:#e6eefb; --muted:#8aa0bf; --dim:#5b6f8e;
+  --cyan:#4fd8ff; --cyan2:#1ea7d8; --gold:#ffc65c; --rose:#ff6b8f; --violet:#a98bff; --green:#53e3a6;
+  --f-ui:"Noto Sans KR",system-ui,sans-serif; --f-mono:"Orbitron","Noto Sans KR",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);}
+body{min-height:100vh;background:
+  radial-gradient(1200px 600px at 70% -10%,rgba(79,216,255,.10),transparent 60%),
+  radial-gradient(900px 500px at -10% 110%,rgba(169,139,255,.08),transparent 60%),var(--bg);}
+a{color:inherit}
+img{display:block;max-width:100%}
+.grid-bg{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(79,216,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(79,216,255,.04) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at center,#000 30%,transparent 80%)}
+
+/* layout */
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh;position:relative}
+aside{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);background:rgba(8,14,24,.85);backdrop-filter:blur(8px);display:flex;flex-direction:column;padding:18px 12px;z-index:5}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 18px;border-bottom:1px solid var(--line);margin-bottom:12px}
+.brand .logo{width:34px;height:34px;border:1px solid var(--cyan);border-radius:9px;display:grid;place-items:center;color:var(--cyan);font-family:var(--f-mono);font-weight:900;font-size:13px;box-shadow:0 0 18px rgba(79,216,255,.25)}
+.brand b{font-family:var(--f-mono);letter-spacing:.18em;font-size:14px;display:block}
+.brand small{color:var(--dim);font-size:10px;letter-spacing:.12em;font-family:var(--f-mono)}
+nav button{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:2px;width:100%;box-sizing:border-box;padding:10px 12px;border-radius:10px;margin-bottom:4px;border:1px solid transparent;color:var(--muted)}
+nav button span{font-size:14px;font-weight:700;color:var(--fg)}
+nav button small{font-family:var(--f-mono);font-size:9px;letter-spacing:.14em;color:var(--dim)}
+nav button:hover{background:var(--panel)}
+nav button.on{background:linear-gradient(90deg,rgba(79,216,255,.14),transparent);border-color:var(--line2)}
+nav button.on span{color:var(--cyan)}
+.sys{margin-top:auto;border:1px solid var(--line);border-radius:10px;padding:10px;font-family:var(--f-mono);font-size:10px;color:var(--dim);line-height:1.9}
+.sys i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);margin-right:6px}
+.sys b{color:var(--muted);font-weight:500;float:right}
+main{padding:28px clamp(16px,4vw,48px) 80px;min-width:0}
+.page{display:none;animation:fade .35s ease}
+.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.22em;color:var(--cyan)}
+h1.ptitle{font-size:clamp(26px,3.4vw,38px);font-weight:900;margin:6px 0 4px}
+.psub{color:var(--muted);font-size:14px;margin-bottom:22px}
+.panel{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:18px}
+.sec-h{display:flex;align-items:baseline;gap:10px;margin:34px 0 12px}
+.sec-h h2{font-size:20px;font-weight:900}
+.sec-h small{font-family:var(--f-mono);font-size:10px;letter-spacing:.2em;color:var(--dim)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+.hero h1{font-size:clamp(34px,5.4vw,64px);line-height:1.08;font-weight:900;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--cyan);text-shadow:0 0 28px rgba(79,216,255,.35)}
+.hero .tag{font-family:var(--f-mono);font-size:22px;letter-spacing:.35em;color:var(--fg);margin:14px 0 6px}
+.hero p{color:var(--muted);line-height:1.8;font-size:15px;max-width:560px}
+.hero-img{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line2);aspect-ratio:16/11;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.hero-img img{width:100%;height:100%;object-fit:cover}
+.hero-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(6,11,20,.9))}
+.hero-img .cap{position:absolute;left:14px;bottom:12px;z-index:2;font-family:var(--f-mono);font-size:11px;letter-spacing:.15em;color:var(--cyan)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.stat{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel)}
+.stat small{font-family:var(--f-mono);font-size:9px;letter-spacing:.18em;color:var(--dim)}
+.stat b{display:block;font-size:22px;font-weight:900;margin-top:6px}
+.stat span{font-size:12px;color:var(--muted)}
+.warn b{color:var(--gold)}
+.notice{display:grid;gap:10px}
+.notice div{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:14px;line-height:1.6}
+.notice em{font-style:normal;font-family:var(--f-mono);font-size:10px;padding:3px 7px;border-radius:5px;flex:none;margin-top:2px}
+.t-i{background:rgba(79,216,255,.12);color:var(--cyan)} .t-w{background:rgba(255,198,92,.12);color:var(--gold)} .t-d{background:rgba(255,107,143,.12);color:var(--rose)}
+
+/* cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.hcard{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel);transition:.2s;display:block}
+.hcard:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 10px 30px rgba(79,216,255,.12)}
+.hcard .im{position:relative;aspect-ratio:3/4;overflow:hidden}
+.hcard .im img{width:100%;height:100%;object-fit:cover;object-position:top}
+.hcard .rank{position:absolute;left:10px;top:10px;font-family:var(--f-mono);font-size:10px;padding:4px 8px;border-radius:6px;background:rgba(6,11,20,.8);border:1px solid var(--line2);color:var(--cyan)}
+.hcard .bd{padding:12px 14px 14px}
+.hcard h3{font-size:18px;font-weight:900}
+.hcard .ab{font-size:12px;color:var(--gold);margin:3px 0 6px}
+.hcard p{font-size:13px;color:var(--muted);line-height:1.55}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.chip{all:unset;cursor:pointer;font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.chip.on{border-color:var(--cyan);color:var(--cyan);background:rgba(79,216,255,.08)}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(3,6,12,.82);backdrop-filter:blur(6px);display:none;z-index:50;overflow:auto;padding:24px 16px}
+.modal.on{display:block}
+.mbox{max-width:1100px;margin:0 auto;background:var(--bg2);border:1px solid var(--line2);border-radius:16px;overflow:hidden}
+.mtop{display:grid;grid-template-columns:320px 1fr;gap:0}
+.mtop .big{background:#000;position:relative}
+.mtop .big img{width:100%;height:100%;object-fit:cover;max-height:520px}
+.mtop .info{padding:22px 24px}
+.mtop h2{font-size:30px;font-weight:900}
+.mtop .en{font-family:var(--f-mono);font-size:11px;letter-spacing:.2em;color:var(--cyan)}
+.kv{display:grid;grid-template-columns:90px 1fr;gap:8px 12px;margin-top:16px;font-size:14px;line-height:1.6}
+.kv dt{color:var(--dim);font-size:12px;padding-top:2px}
+.quote{margin-top:14px;padding:12px 14px;border-left:3px solid var(--cyan);background:var(--panel);font-size:14px;color:var(--fg)}
+.secret{margin-top:12px;padding:10px 14px;border:1px dashed var(--line2);border-radius:10px;font-size:13px;color:var(--muted)}
+.secret b{color:var(--rose);font-family:var(--f-mono);font-size:10px;letter-spacing:.15em;margin-right:6px}
+.close{all:unset;cursor:pointer;position:sticky;top:0;float:right;margin:10px;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--panel);border:1px solid var(--line2);font-size:18px;z-index:3}
+.gal-h{padding:16px 24px 6px;display:flex;justify-content:space-between;align-items:baseline}
+.gal-h b{font-size:16px}
+.gal-h small{color:var(--dim);font-size:12px}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;padding:8px 24px 24px}
+.gal figure{border-radius:8px;overflow:hidden;border:1px solid var(--line);background:#000;cursor:pointer}
+.gal figure img{aspect-ratio:3/4;object-fit:cover;width:100%;transition:.2s}
+.gal figure:hover img{transform:scale(1.04)}
+.gal figcaption{font-size:11px;text-align:center;padding:4px;color:var(--muted)}
+.gal figure.sp figcaption{color:var(--gold)}
+
+/* districts */
+.dist{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.dcard{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.dcard .im{aspect-ratio:16/10;overflow:hidden;position:relative}
+.dcard .im img{width:100%;height:100%;object-fit:cover}
+.dcard .code{position:absolute;right:10px;top:10px;font-family:var(--f-mono);font-size:10px;padding:4px 8px;border-radius:6px;background:rgba(6,11,20,.8);color:var(--cyan);border:1px solid var(--line2)}
+.dcard .bd{padding:14px}
+.dcard h3{font-size:17px;font-weight:900}
+.dcard h3 small{font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:.15em;margin-left:6px}
+.dcard p{font-size:13px;color:var(--muted);line-height:1.6;margin-top:6px}
+.dcard .who{font-size:12px;margin-top:8px;color:var(--cyan)}
+.spots{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.spots figure{border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--panel)}
+.spots img{aspect-ratio:16/10;object-fit:cover;width:100%}
+.spots figcaption{padding:8px 10px;font-size:13px;font-weight:700}
+
+/* ranking */
+.rank-list{display:grid;gap:10px}
+.rrow{display:grid;grid-template-columns:64px 72px 1fr auto;gap:14px;align-items:center;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+.rrow .no{font-family:var(--f-mono);font-size:26px;font-weight:900;color:var(--dim)}
+.rrow.r1 .no{color:var(--gold)} .rrow.r2 .no{color:#cfd8e6} .rrow.r3 .no{color:#e3a36b}
+.rrow .av{width:72px;height:72px;border-radius:10px;overflow:hidden;background:var(--panel2);display:grid;place-items:center;color:var(--dim);font-family:var(--f-mono);font-size:18px}
+.rrow .av img{width:100%;height:100%;object-fit:cover;object-position:top}
+.rrow h3{font-size:17px;font-weight:900}
+.rrow h3 small{font-size:12px;color:var(--gold);font-weight:500;margin-left:6px}
+.rrow p{font-size:13px;color:var(--muted);margin-top:3px}
+.rrow .tg{font-size:11px;font-family:var(--f-mono);padding:4px 8px;border-radius:6px;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.rrow .tg.h{color:var(--cyan);border-color:var(--cyan)}
+
+/* codex */
+.phase{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.ph{border:1px solid var(--line);border-radius:12px;padding:14px 12px;background:var(--panel);text-align:center}
+.ph b{font-family:var(--f-mono);font-size:26px;display:block}
+.ph em{font-style:normal;font-size:13px;font-weight:700;display:block;margin:6px 0 4px}
+.ph small{font-size:12px;color:var(--muted);line-height:1.5;display:block}
+.ph .bar{height:4px;border-radius:2px;background:var(--line);margin-top:10px;overflow:hidden}
+.ph .bar i{display:block;height:100%;background:var(--cyan)}
+.ph.p5{border-color:var(--gold)} .ph.p5 b{color:var(--gold)}
+.res{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.res div{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--panel)}
+.res b{font-family:var(--f-mono);color:var(--violet);font-size:12px;letter-spacing:.1em}
+.res h4{font-size:15px;margin:6px 0}
+.res p{font-size:13px;color:var(--muted);line-height:1.6}
+.rules{display:grid;gap:8px;font-size:14px;line-height:1.7;color:var(--muted)}
+.rules li{list-style:none;padding-left:16px;position:relative}
+.rules li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;border-radius:2px;background:var(--cyan)}
+
+/* factions */
+.fac{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.fcard{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--panel)}
+.fcard .t{display:flex;justify-content:space-between;align-items:center}
+.fcard h3{font-size:17px;font-weight:900}
+.fcard .side{font-family:var(--f-mono);font-size:10px;padding:3px 8px;border-radius:5px}
+.s-sci{background:rgba(79,216,255,.12);color:var(--cyan)} .s-mys{background:rgba(169,139,255,.14);color:var(--violet)} .s-stu{background:rgba(83,227,166,.12);color:var(--green)} .s-dark{background:rgba(255,107,143,.12);color:var(--rose)}
+.fcard p{font-size:13px;color:var(--muted);line-height:1.65;margin-top:8px}
+.fcard .mem{font-size:12px;color:var(--fg);margin-top:10px}
+
+/* relation */
+.rel-wrap{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:10px}
+.rel-wrap svg{width:100%;height:auto;display:block}
+.rel-legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--muted);margin-top:10px;padding:0 6px 6px}
+.rel-legend i{display:inline-block;width:18px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px}
+
+/* chapters */
+.chap{display:grid;gap:12px}
+.ch{display:grid;grid-template-columns:80px 1fr;gap:16px;border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--panel);align-items:center}
+.ch .n{font-family:var(--f-mono);font-size:30px;font-weight:900;color:var(--cyan);text-align:center}
+.ch.lock .n{color:var(--dim)}
+.ch h3{font-size:18px;font-weight:900}
+.ch p{font-size:14px;color:var(--muted);line-height:1.65;margin-top:4px}
+.ch .who{font-size:12px;margin-top:6px;color:var(--gold)}
+.ch.lock{opacity:.7}
+.ch.lock p{filter:blur(3px);user-select:none}
+
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;z-index:80;place-items:center;padding:20px;cursor:zoom-out}
+.lightbox.on{display:grid}
+.lightbox img{max-height:90vh;border-radius:10px}
+.lightbox p{color:var(--muted);text-align:center;margin-top:8px;font-size:14px}
+
+.mnav{display:none}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  aside{display:none}
+  .mnav{display:flex;gap:6px;overflow-x:auto;position:sticky;top:0;z-index:10;background:rgba(6,11,20,.95);padding:10px 16px;border-bottom:1px solid var(--line)}
+  .mnav button{all:unset;cursor:pointer;white-space:nowrap;font-size:13px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+  .mnav button.on{color:var(--cyan);border-color:var(--cyan)}
+  .hero{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .phase{grid-template-columns:repeat(3,1fr)}
+  .res{grid-template-columns:1fr 1fr}
+  .mtop{grid-template-columns:1fr}
+  .mtop .big img{max-height:420px;object-position:top}
+  .rrow{grid-template-columns:40px 56px 1fr}
+  .rrow .tg{display:none}
+  .rrow .av{width:56px;height:56px}
+  .ch{grid-template-columns:50px 1fr}
+}
+@media (max-width:520px){.res{grid-template-columns:1fr}.phase{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="mnav" id="mnav"></div>
+<div class="app">
+<aside>
+  <div class="brand"><div class="logo">NE</div><div><b>NEW EDEN</b><small>ACADEMY CITY NETWORK</small></div></div>
+  <nav id="nav"></nav>
+  <div class="sys"><div><i></i>SYSTEM ONLINE</div><div>PHASE NET <b>STABLE</b></div><div>TREATY <b style="color:var(--gold)">CRACKED</b></div><div>RESONANCE <b style="color:var(--rose)">UNKNOWN</b></div></div>
+</aside>
+<main id="main">
+
+<!-- HOME -->
+<section class="page" id="home">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">NEW EDEN // ACADEMY CITY</div>
+      <h1>위상을 개발하는<br><em>해상 학원도시</em></h1>
+      <div class="tag">NEW EDEN</div>
+      <p>인천 앞바다의 인공섬. 인구 180만 명 중 80%가 학생이고, 학생들은 '뇌 위상 개발'로 초능력을 얻는다. 등급이 곧 신분인 이 도시에서, 위상 측정 결과 <b style="color:var(--rose)">'판정 불가'</b>가 나온 전학생이 도착했다.</p>
+    </div>
+    <div class="hero-img"><img src="place/장소_바벨타워.webp" alt="바벨 타워"><div class="cap">CENTRAL // BABEL TOWER</div></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><small>POPULATION</small><b>180만</b><span>학생 80% · 전원 대학부</span></div>
+    <div class="stat"><small>PHASE 5 · 칠성</small><b>7명</b><span>개인이 군대 하나와 맞먹는 존재</span></div>
+    <div class="stat"><small>PHASE 0 RATIO</small><b>60%</b><span>무능력자 · 지하층 거주</span></div>
+    <div class="stat warn"><small>SCIENCE × MYSTIC</small><b>협정 균열</b><span>술법 결사의 잠입 징후</span></div>
+  </div>
+  <div class="sec-h"><h2>도시 공지</h2><small>BULLETIN</small></div>
+  <div class="notice">
+    <div><em class="t-i">NOTICE</em><span>신학기 위상 측정이 중앙구 측정 센터에서 진행됩니다. 측정 결과에 따라 기숙사와 장학금이 재배정됩니다.</span></div>
+    <div><em class="t-w">ALERT</em><span>연구구 일부 구역 출입 제한. 관계자 외 접근 시 '그림자'의 제재를 받을 수 있습니다.</span></div>
+    <div><em class="t-w">RUMOR</em><span>칠성 2위 마도경이 1위 자리를 노린다는 소문. 올해 서열전이 열릴 가능성이 높습니다.</span></div>
+    <div><em class="t-d">WATCH</em><span>항만구에서 정체불명의 부적과 영창 흔적 발견. 풍기위원회가 조사 중입니다.</span></div>
+  </div>
+  <div class="sec-h"><h2>당신의 능력 「공명」</h2><small>RESONANCE</small></div>
+  <div class="panel" style="line-height:1.8;color:var(--muted);font-size:15px">
+    혼자일 때 당신은 위상 0이다. 하지만 신뢰하는 상대와 닿는 순간, 그녀의 능력을 <b style="color:var(--cyan)">증폭</b>하거나 잠깐 <b style="color:var(--cyan)">빌려 쓸 수</b> 있다. 유대가 깊을수록 공명은 강해지고, 빌린 능력의 대가도 함께 짊어진다. 이사회는 당신을 <b style="color:var(--rose)">'위상 6 계획'의 열쇠</b>로 보고 있다.
+  </div>
+</section>
+
+<!-- HEROINES -->
+<section class="page" id="heroines">
+  <div class="eyebrow">DATABANK // 8 RECORDS</div>
+  <h1 class="ptitle">히로인 데이터뱅크</h1>
+  <p class="psub">카드를 누르면 프로필과 상황 이미지 33장을 볼 수 있어요.</p>
+  <div class="filters" id="hfilter"></div>
+  <div class="cards" id="hcards"></div>
+</section>
+
+<!-- DISTRICTS -->
+<section class="page" id="districts">
+  <div class="eyebrow">CITY MAP // 7 DISTRICTS</div>
+  <h1 class="ptitle">구역 지도</h1>
+  <p class="psub">등급에 따라 갈 수 있는 곳과 갈 수 없는 곳이 나뉜다.</p>
+  <div class="dist" id="dist"></div>
+  <div class="sec-h"><h2>주요 장소</h2><small>LANDMARKS</small></div>
+  <div class="spots" id="spots"></div>
+</section>
+
+<!-- RANKING -->
+<section class="page" id="ranking">
+  <div class="eyebrow">PHASE 5 // SEVEN STARS</div>
+  <h1 class="ptitle">칠성 서열</h1>
+  <p class="psub">위상 5, 단 일곱 명. 서열은 공식 '서열전'으로만 바뀐다.</p>
+  <div class="rank-list" id="rank"></div>
+</section>
+
+<!-- CODEX -->
+<section class="page" id="codex">
+  <div class="eyebrow">SYSTEM CODEX // PHASE</div>
+  <h1 class="ptitle">위상 코덱스</h1>
+  <p class="psub">뉴에덴의 능력 체계와 「공명」의 규칙.</p>
+  <div class="phase" id="phase"></div>
+  <div class="sec-h"><h2>능력의 원칙</h2><small>RULES</small></div>
+  <ul class="rules panel">
+    <li>능력은 한 사람에 하나. 모든 능력엔 한계와 대가가 있다(체력, 연산 과부하, 집중력, 사정거리).</li>
+    <li>등급이 곧 신분이다. 기숙사·장학금·식당 메뉴·출입 구역이 위상에 따라 다르다.</li>
+    <li>위상 차이는 크지만, 상성과 작전, 그리고 공명으로 뒤집을 수 있다.</li>
+    <li>초능력자가 술법을 쓰면 몸이 버티지 못한다. 과학과 술법은 서로 다른 법칙으로 움직인다.</li>
+  </ul>
+  <div class="sec-h"><h2>「공명」 4단계</h2><small>RESONANCE LEVEL</small></div>
+  <div class="res">
+    <div><b>LV.1 · 0~29</b><h4>접촉 증폭</h4><p>손이 닿아 있는 동안 그녀의 능력을 1.5배 증폭한다.</p></div>
+    <div><b>LV.2 · 30~59</b><h4>1분 차용</h4><p>그녀의 능력을 1분 동안 빌려 쓴다.</p></div>
+    <div><b>LV.3 · 60~89</b><h4>5분 차용</h4><p>5분 동안 빌려 쓰고, 시선만으로도 증폭한다.</p></div>
+    <div><b>LV.4 · 90+</b><h4>완전 공명</h4><p>무제한 차용, 두 히로인과 동시 공명.</p></div>
+  </div>
+  <p class="psub" style="margin-top:12px">※ 빌린 능력의 대가도 함께 빌린다. 연속 사용하면 두통과 코피.</p>
+</section>
+
+<!-- FACTIONS -->
+<section class="page" id="factions">
+  <div class="eyebrow">ARCHIVE // FACTIONS</div>
+  <h1 class="ptitle">세력 아카이브</h1>
+  <p class="psub">도시를 움직이는 자들, 그리고 도시를 노리는 자들.</p>
+  <div class="fac" id="fac"></div>
+</section>
+
+<!-- RELATION -->
+<section class="page" id="relation">
+  <div class="eyebrow">NETWORK // RELATIONS</div>
+  <h1 class="ptitle">관계도</h1>
+  <p class="psub">8명의 히로인, 그리고 그 한가운데의 당신.</p>
+  <div class="rel-wrap"><svg id="relsvg" viewBox="0 0 900 640"></svg>
+  <div class="rel-legend"><span><i style="background:var(--rose)"></i>라이벌·대립</span><span><i style="background:var(--cyan)"></i>보호·신뢰</span><span><i style="background:var(--gold)"></i>숭배·집착</span><span><i style="background:var(--violet)"></i>비밀·과거</span></div></div>
+</section>
+
+<!-- CHAPTERS -->
+<section class="page" id="chapters">
+  <div class="eyebrow">STORY // CHAPTERS</div>
+  <h1 class="ptitle">챕터</h1>
+  <p class="psub">이야기는 여섯 개의 챕터로 진행된다. 다음 챕터는 플레이로 열린다.</p>
+  <div class="chap" id="chap"></div>
+</section>
+
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<div class="lightbox" id="lb"><div><img id="lbimg" alt=""><p id="lbcap"></p></div></div>
+
+<script>
+const NAV=[['home','도시 메인','CITY // MAIN'],['heroines','히로인 데이터뱅크','8 RECORDS'],['districts','구역 지도','CITY MAP'],['ranking','칠성 서열','PHASE 5'],['codex','위상 코덱스','SYSTEM / RULES'],['factions','세력 아카이브','FACTIONS'],['relation','관계도','NETWORK'],['chapters','챕터','STORY']];
+const COMMON=['기본','미소','웃음','수줍음','놀람','당황','삐짐','분노','진지','슬픔','눈물','걱정','두려움','결의','경계','지침','감동','질투','애정','장난','전투','부상','수업','식사','잠옷','사복','데이트','포옹','손잡기','잠듦'];
+const H=[
+ {n:'강하루',en:'KANG HARU',slug:'haru',g:'위상 0',grp:'phase',age:21,ab:'소거(消去)',tag:'오른손에 닿은 능력을 지우는 불운의 무능력자',
+  pow:'오른손에 닿은 모든 능력·술법을 지운다. 오른손 외엔 평범한 몸이고, 날아오는 물리적 결과는 못 막는다.',lim:'행운까지 지워져 매일 사고를 당한다.',
+  per:'귀찮다면서 눈앞에서 누가 울면 무조건 뛰어드는 오지랖.',line:'"…재수 없어. 왜 하필 오늘이야."',res:'그녀의 손이 닿아도 당신의 공명만은 지워지지 않는다.',sec:'1년 전 기억이 통째로 없다.',sp:['소거','불운','라면']},
+ {n:'백설아',en:'BAEK SEOLA',slug:'seola',g:'천문',grp:'mystic',age:20,ab:'만권(萬卷)',tag:'금서 103,000권을 기억한 술법 결사의 기록 무녀',
+  pow:'금서 10만 3천 권을 기억해 적의 술법을 분석하고, 영창에 끼어들어 오작동시킨다.',lim:'직접 술법은 쓰지 못한다.',
+  per:'천진한 대식가. 술법 이야기만 나오면 냉철한 학자로 변한다. 배고프면 당신의 소매를 문다.',line:'"배가 고파서 쓰러질 것 같사옵니다만?"',res:'기억 속 술법 하나를 당신이 대신 발동할 수 있다.',sec:'1년마다 기억을 지워야 한다는 저주가 걸려 있다.',sp:['영창','배고픔','금서']},
+ {n:'서은채',en:'SEO EUNCHAE',slug:'eunchae',g:'칠성 3위',grp:'seven',age:21,ab:'뇌정(雷霆)',tag:'쇠구슬을 음속 3배로 쏘는 츤데레 전격 에이스',
+  pow:'10억 볼트급 전격. 필살기 「뇌창」, 전자기 벽타기, 해킹.',lim:'출력이 클수록 주변 전자기기가 망가진다.',
+  per:'정의감·승부욕·자존심. 귀여운 것에 약하다. 강하루에게 한 번도 못 이긴 라이벌.',line:'"그, 그런 거 아니거든?!"',res:'출력이 2배가 되지만 불안정해져, 손을 맞잡고 있어야 한다.',sec:'자신의 DNA로 만든 무언가가 있다는 걸 아직 모른다.',sp:['뇌창','자판기','귀여운것']},
+ {n:'한서린',en:'HAN SEORIN',slug:'seorin',g:'칠성 1위',grp:'seven',age:22,ab:'역행(逆行)',tag:'모든 힘의 방향을 뒤집는 학원도시 최강',
+  pow:'몸에 닿는 모든 힘(총알·열·충격)의 방향을 뒤집는다. 바람·중력까지 다룬다.',lim:'귀의 연산 보조기가 망가지면 능력은 물론 말과 보행까지 흐트러진다.',
+  per:'오만하고 냉소적. 누구도 가까이 두지 않지만, 속은 죄책감에 짓눌려 있다.',line:'"꺼져. 귀찮아."',res:'연산 일부를 당신이 나눠 맡아, 보조기 없이 30분을 버틴다.',sec:'그녀가 지우고 싶은 과거의 실험이 있다.',sp:['반사','과부하','서툰다정']},
+ {n:'류채린',en:'RYU CHAERIN',slug:'chaerin',g:'위상 4',grp:'phase',age:20,ab:'도약(跳躍)',tag:'언니님 바라기 풍기위원 순간이동 능력자',
+  pow:'자신과 손에 닿은 물체를 최대 80m 순간이동. 쇠바늘을 상대 옷에 꽂아 벽에 고정한다.',lim:'마음이 흔들리면 좌표가 틀어진다.',
+  per:'서은채를 숭배하는 집착형 후배. 근무 중엔 냉정하고 유능한 수사관.',line:'"언니님 곁에 붙은 벌레는 제가 처리하겠습니다."',res:'둘이 함께 순간이동하고, 거리가 두 배로 늘어난다.',sec:'처음엔 당신을 적대하지만, 질투의 방향이 바뀌어 간다.',sp:['순간이동','수사','언니님']},
+ {n:'서이온',en:'SEO ION',slug:'ion',g:'클론',grp:'phase',age:20,ab:'의식망',tag:'서은채와 같은 얼굴을 한 수수께끼의 소녀',
+  pow:'약한 전격(위상 2). 다른 개체들의 기억과 감정에 접속하는 「의식망」.',lim:'의식망 깊은 곳은 그녀도 모른다.',
+  per:'막 세상에 나와 모든 게 신기하다. 감정을 그대로 말로 읽는다.',line:'"이온은 지금 기쁘다고 보고합니다."',res:'의식망을 통해 섬의 감시 카메라를 잠깐 빌린다.',sec:'그녀가 어디서 왔는지는 챕터 3에서 밝혀진다.',sp:['의식망','신기함','보고']},
+ {n:'신유리',en:'SHIN YURI',slug:'yuri',g:'칠성 5위',grp:'seven',age:21,ab:'심해(心海)',tag:'기억과 감정을 다루는 상아탑의 여왕',
+  pow:'기억 열람·조작·삭제, 감정 주입. 브로치로 대상을 지정한다.',lim:'체력 최하. 열 걸음만 뛰어도 숨이 찬다.',
+  per:'우아하고 장난스러운 여왕님. 속을 아무도 모른다. 서은채 놀리기가 취미.',line:'"어머~ 귀여워라☆"',res:'당신의 마음만은 읽을 수 없다. 그래서 유일하게 진심으로 대한다.',sec:'당신이 기억하지 못하는 첫 만남이 있다.',sp:['심해','숨참','여왕']},
+ {n:'진유화',en:'JIN YUHWA',slug:'yuhwa',g:'천문',grp:'mystic',age:26,ab:'천검(天劍)',tag:'술법 결사 최강의 검사, 연애엔 쑥맥인 누님',
+  pow:'천인 체질로 신체 능력이 인간을 초월한다. 발도술 「일섬」으로 일곱 참격을 동시에.',lim:'전력을 내면 몸이 버티지 못해 피를 토한다.',
+  per:'진지하고 책임감이 강하다. 연애 이야기엔 귀까지 빨개진다.',line:'"…그런 건, 부끄러운 겁니다."',res:'전력을 내도 몸이 상하지 않는다. 대신 감정이 이어진다.',sec:'백설아를 지키는 데에는 그녀만의 속죄가 있다.',sp:['일섬','수련','부끄러움']}
+];
+const img=(h,s)=>`${h.slug}/${encodeURIComponent(h.n+'_'+s)}.webp`;
+const place=n=>`place/${encodeURIComponent('장소_'+n)}.webp`;
+
+// nav
+const navEl=document.getElementById('nav'),mnav=document.getElementById('mnav');
+NAV.forEach(([id,t,s])=>{
+  const b=document.createElement('button');b.dataset.id=id;b.innerHTML=`<span>${t}</span><small>${s}</small>`;b.onclick=()=>go(id);navEl.appendChild(b);
+  const m=document.createElement('button');m.dataset.id=id;m.textContent=t;m.onclick=()=>go(id);mnav.appendChild(m);
+});
+function go(id){
+  if(!document.getElementById(id))id='home';
+  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('on',p.id===id));
+  document.querySelectorAll('nav button,.mnav button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));
+  history.replaceState(null,'','#'+id);window.scrollTo(0,0);
+}
+
+// heroine cards
+const F=[['all','전체'],['seven','칠성'],['phase','위상 능력자'],['mystic','천문 결사']];
+let cur='all';
+const hf=document.getElementById('hfilter'),hc=document.getElementById('hcards');
+F.forEach(([k,t])=>{const c=document.createElement('button');c.className='chip'+(k===cur?' on':'');c.textContent=t;c.onclick=()=>{cur=k;hf.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===c));renderH();};hf.appendChild(c);});
+function renderH(){
+  hc.innerHTML='';
+  H.filter(h=>cur==='all'||h.grp===cur).forEach(h=>{
+    const b=document.createElement('button');b.className='hcard';
+    b.innerHTML=`<div class="im"><img loading="lazy" src="${img(h,'기본')}" alt="${h.n}"><span class="rank">${h.g}</span></div><div class="bd"><h3>${h.n}</h3><div class="ab">「${h.ab}」</div><p>${h.tag}</p></div>`;
+    b.onclick=()=>openH(h);hc.appendChild(b);
+  });
+}
+renderH();
+const modal=document.getElementById('modal'),mbox=document.getElementById('mbox');
+function openH(h){
+  const all=COMMON.concat(h.sp);
+  mbox.innerHTML=`<button class="close" onclick="closeM()">✕</button>
+  <div class="mtop"><div class="big"><img id="bigimg" src="${img(h,'기본')}" alt="${h.n}"></div>
+  <div class="info"><div class="en">${h.en} // ${h.g}</div><h2>${h.n} <small style="font-size:15px;color:var(--muted);font-weight:500">${h.age}세</small></h2>
+  <div class="ab" style="color:var(--gold);margin-top:4px">능력 「${h.ab}」</div>
+  <dl class="kv"><dt>능력</dt><dd>${h.pow}</dd><dt>한계</dt><dd>${h.lim}</dd><dt>성격</dt><dd>${h.per}</dd><dt>공명 시</dt><dd style="color:var(--cyan)">${h.res}</dd></dl>
+  <div class="quote">${h.line}</div>
+  <div class="secret"><b>CLASSIFIED</b>${h.sec}</div></div></div>
+  <div class="gal-h"><b>상황 이미지</b><small>${all.length}장 · 노란 글씨는 전용 상황</small></div>
+  <div class="gal">${all.map(s=>`<figure class="${h.sp.includes(s)?'sp':''}" data-s="${s}"><img loading="lazy" src="${img(h,s)}" alt="${h.n} ${s}"><figcaption>${s}</figcaption></figure>`).join('')}</div>`;
+  mbox.querySelectorAll('.gal figure').forEach(f=>f.onclick=()=>lb(img(h,f.dataset.s),h.n+' · '+f.dataset.s));
+  modal.classList.add('on');document.body.style.overflow='hidden';modal.scrollTop=0;
+}
+function closeM(){modal.classList.remove('on');document.body.style.overflow='';}
+modal.onclick=e=>{if(e.target===modal)closeM();};
+const lbEl=document.getElementById('lb');
+function lb(src,cap){document.getElementById('lbimg').src=src;document.getElementById('lbcap').textContent=cap;lbEl.classList.add('on');}
+lbEl.onclick=()=>lbEl.classList.remove('on');
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){lbEl.classList.remove('on');closeM();}});
+
+// districts
+const D=[
+ ['중앙구','CENTRAL','바벨타워','이사회 본부 「바벨 타워」와 위상 측정 센터가 있는 도시의 심장. 꼭대기 층에 누가 있는지 아무도 모른다.','이사회 · 그림자'],
+ ['상아구','IVORY','상아탑','명문 상아탑 여학관. 칠성과 위상 4가 모인 엘리트 구역. 파벌 「백합회」가 지배한다.','서은채 · 류채린 · 신유리'],
+ ['연구구','LAB','연구소','능력 개발 연구소가 모인 구역. 출입 제한 구역이 많고, 밤마다 이상한 빛이 샌다.','한서린 · 서이온'],
+ ['지하층','UNDER','지하층','위상 0 기숙사 구역. 낡고 좁고 시끄럽다. 무능력자 불량배 연합 「스컬」의 본거지.','강하루 · 당신'],
+ ['상업구','MARKET','상업구','쇼핑가와 식당가, 오락실. 학생 아르바이트와 데이트의 무대.','누구나'],
+ ['항만구','HARBOR','항만구','섬의 유일한 출입구. 밀수와 잠입의 통로. 요즘 부적 흔적이 발견된다.','천문 결사'],
+ ['폐쇄구','SEALED','폐쇄구','실험 사고로 버려진 구역. 소문과 불법 실험의 온상.','???']
+];
+document.getElementById('dist').innerHTML=D.map(d=>`<div class="dcard"><div class="im"><img loading="lazy" src="${place(d[2])}" alt="${d[0]}"><span class="code">${d[1]}</span></div><div class="bd"><h3>${d[0]}<small>${d[1]} SECTOR</small></h3><p>${d[3]}</p><div class="who">▸ ${d[4]}</div></div></div>`).join('');
+const SP=['측정센터','교실','학생식당','기숙사방','오락실','옥상','모노레일','공원','편의점','서열전경기장','에덴제','이사회','천문사당'];
+const SPN={'측정센터':'위상 측정 센터','서열전경기장':'서열전 경기장','이사회':'이사회 회의실','천문사당':'천문 사당','기숙사방':'지하층 기숙사 방','에덴제':'대축제 에덴제'};
+document.getElementById('spots').innerHTML=SP.map(s=>`<figure><img loading="lazy" src="${place(s)}" alt="${s}"><figcaption>${SPN[s]||s}</figcaption></figure>`).join('');
+document.querySelectorAll('#spots figure,#dist .dcard').forEach(f=>f.style.cursor='zoom-in');
+document.querySelectorAll('#spots figure').forEach(f=>f.onclick=()=>lb(f.querySelector('img').src,f.querySelector('figcaption').textContent));
+document.querySelectorAll('#dist .dcard').forEach(f=>f.onclick=()=>lb(f.querySelector('img').src,f.querySelector('h3').firstChild.textContent));
+
+// ranking
+const R=[
+ [1,'한서린','역행','모든 힘의 방향을 뒤집는 최강. 누구도 곁에 두지 않는다.',true],
+ [2,'마도경','중력장','이사회의 충견. 1위 자리를 노리는 야심가.',false],
+ [3,'서은채','뇌정','쇠구슬을 음속 3배로 쏘는 전격 에이스.',true],
+ [4,'남궁리아','열핵','돈으로 움직이는 용병 조직 「파편」의 리더.',false],
+ [5,'신유리','심해','기억과 감정을 다루는 상아탑의 여왕.',true],
+ [6,'???','—','행방불명. 정체도 능력도 소문뿐.',false],
+ [7,'한도준','불굴','원리 불명의 근성 능력. 시끄럽지만 약자 편.',false]];
+document.getElementById('rank').innerHTML=R.map(r=>{const h=H.find(x=>x.n===r[1]);return `<div class="rrow r${r[0]}"><div class="no">${String(r[0]).padStart(2,'0')}</div><div class="av">${h?`<img src="${img(h,'기본')}" alt="${r[1]}">`:(r[0]===6?'?':'—')}</div><div><h3>${r[1]}<small>「${r[2]}」</small></h3><p>${r[3]}</p></div><span class="tg ${r[4]?'h':''}">${r[4]?'HEROINE':'NPC'}</span></div>`}).join('');
+
+// phase
+const P=[[0,'무능력',60,'60% · 지하층. 공공연히 멸시당한다'],[1,'생활급',20,'라이터 대신 불꽃 정도'],[2,'생활급+',10,'일상에서 쓸모 있는 수준'],[3,'실전급',8,'풍기위원 지원 가능'],[4,'병기급',2,'학교의 간판'],[5,'칠성',1,'7명. 개인이 군대 하나']];
+document.getElementById('phase').innerHTML=P.map(p=>`<div class="ph ${p[0]===5?'p5':''}"><b>${p[0]}</b><em>${p[1]}</em><small>${p[3]}</small><div class="bar"><i style="width:${Math.max(4,p[2])}%"></i></div></div>`).join('');
+
+// factions
+const FA=[
+ ['이사회','sci','과학 · 지배','도시의 진짜 권력. 정체불명의 이사장이 이끈다. 비밀리에 「위상 6 계획」을 추진 중.','이사장(목소리와 홀로그램으로만 등장)'],
+ ['그림자','dark','이사회 직속','가면을 쓴 비밀 부대. 감시·암살·실험체 회수. 당신을 미행하기 시작했다.','무감정한 요원들'],
+ ['풍기위원회','stu','학생 치안','능력 범죄를 단속하는 학생 자치 조직. 완장이 상징.','류채린'],
+ ['앵커','sci','무장 경비대','교사·직원으로 구성된 무장 경비대. 큰 사건에만 출동한다.','교사들'],
+ ['백합회','stu','상아탑 파벌','상아탑 여학관 최대 파벌. 정보와 인맥으로 학원을 움직인다.','여왕 신유리'],
+ ['스컬','dark','위상 0 연합','능력자에게 원한을 품은 무능력 불량배 연합. 지하층이 본거지.','무능력자들'],
+ ['파편','dark','용병 조직','칠성 4위 남궁리아가 이끄는 용병단. 돈이면 누구 편이든 된다.','남궁리아'],
+ ['천문(天門)','mys','술법 결사','고대부터 술법서와 술법사를 관리해 온 결사. 학원도시를 "신의 영역을 훔친 도둑"으로 본다.','백설아 · 진유화']];
+const sideCls={sci:'s-sci',mys:'s-mys',stu:'s-stu',dark:'s-dark'};
+document.getElementById('fac').innerHTML=FA.map(f=>`<div class="fcard"><div class="t"><h3>${f[0]}</h3><span class="side ${sideCls[f[1]]}">${f[2]}</span></div><p>${f[3]}</p><div class="mem">▸ ${f[4]}</div></div>`).join('');
+
+// relation svg
+(function(){
+  const svg=document.getElementById('relsvg');const cx=450,cy=320,R0=240;
+  const pos={};H.forEach((h,i)=>{const a=-Math.PI/2+i*2*Math.PI/H.length;pos[h.n]=[cx+R0*Math.cos(a),cy+R0*Math.sin(a)];});
+  pos['당신']=[cx,cy];
+  const E=[['강하루','서은채','라이벌','var(--rose)'],['한서린','서이온','지킨다','var(--cyan)'],['한서린','강하루','첫 패배','var(--rose)'],['서은채','서이온','같은 얼굴','var(--violet)'],['류채린','서은채','숭배','var(--gold)'],['신유리','서은채','놀림','var(--rose)'],['진유화','백설아','수호','var(--cyan)'],['신유리','당신','혼자만의 기억','var(--violet)']];
+  let s='<defs><clipPath id="cc"><circle r="38" cx="0" cy="0"/></clipPath></defs>';
+  H.forEach(h=>{const [x,y]=pos[h.n];s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#1d2f4a" stroke-width="1.5" stroke-dasharray="4 6"/>`;});
+  E.forEach(([a,b,t,c])=>{const [x1,y1]=pos[a],[x2,y2]=pos[b];const mx=(x1+x2)/2,my=(y1+y2)/2;s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="2.5" opacity=".85"/><rect x="${mx-34}" y="${my-11}" width="68" height="22" rx="6" fill="#0a1220" stroke="${c}" stroke-width="1"/><text x="${mx}" y="${my+4}" text-anchor="middle" font-size="11" fill="#e6eefb" font-family="Noto Sans KR">${t}</text>`;});
+  H.forEach(h=>{const [x,y]=pos[h.n];s+=`<g transform="translate(${x},${y})" style="cursor:pointer" data-n="${h.n}"><circle r="41" fill="#0e1828" stroke="#4fd8ff" stroke-width="2"/><image href="${img(h,'기본')}" x="-38" y="-38" width="76" height="111" preserveAspectRatio="xMidYMin slice" clip-path="url(#cc)"/><text y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#e6eefb" font-family="Noto Sans KR">${h.n}</text></g>`;});
+  s+=`<g transform="translate(${cx},${cy})"><circle r="46" fill="#0a1220" stroke="#ff6b8f" stroke-width="2.5"/><text y="-4" text-anchor="middle" font-size="16" font-weight="900" fill="#ff6b8f" font-family="Noto Sans KR">당신</text><text y="16" text-anchor="middle" font-size="10" fill="#8aa0bf" font-family="Orbitron">RESONANCE</text></g>`;
+  svg.innerHTML=s;
+  svg.querySelectorAll('g[data-n]').forEach(g=>g.onclick=()=>openH(H.find(h=>h.n===g.dataset.n)));
+})();
+
+// chapters
+const C=[
+ ['판정 불가','측정기에 뜬 붉은 글자. 능력을 지우는 소녀와 전격 에이스 사이에서 당신의 「공명」이 깨어난다.','강하루 · 서은채 · 류채린 · 신유리',false],
+ ['금서의 소녀','어느 밤, 기숙사 베란다에 하얀 무녀복의 소녀가 걸려 있었다.','백설아 · 진유화',false],
+ ['마지막 개체','서은채와 똑같은 얼굴의 소녀. 연구구 깊은 곳에 숨겨진 실험의 진실.','서이온 · 한서린',true],
+ ['서열전','칠성 서열이 흔들린다. 1위 자리를 노리는 자의 뒤에 누가 있는가.','한서린 · 서은채 · 류채린',true],
+ ['협정 붕괴','대축제 에덴제. 과학과 술법이 정면으로 부딪친다. 그리고 지워진 기억.','신유리 · 백설아 · 진유화',true],
+ ['위상 6','바벨 타워 꼭대기. 「공명」의 진짜 정체.','전원',true]];
+document.getElementById('chap').innerHTML=C.map((c,i)=>`<div class="ch ${c[3]?'lock':''}"><div class="n">${String(i+1).padStart(2,'0')}</div><div><h3>${c[3]?'🔒 ':''}${c[0]}</h3><p>${c[1]}</p><div class="who">▸ ${c[2]}</div></div></div>`).join('');
+
+window.addEventListener('hashchange',()=>go((location.hash||'#home').slice(1)));
+go((location.hash||'#home').slice(1));
+</script>
+</body>
+</html>

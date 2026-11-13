@@ -161,7 +161,9 @@ h1.ptitle{font-size:clamp(26px,3.4vw,38px);font-weight:900;margin:6px 0 4px}
 
 /* factions */
 .fac{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.fcard{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--panel)}
+.fcard{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--panel);overflow:hidden}
+.fcard .fim{margin:-16px -16px 12px;aspect-ratio:16/9;overflow:hidden}
+.fcard .fim img{width:100%;height:100%;object-fit:cover;object-position:center 25%}
 .fcard .t{display:flex;justify-content:space-between;align-items:center}
 .fcard h3{font-size:17px;font-weight:900}
 .fcard .side{font-family:var(--f-mono);font-size:10px;padding:3px 8px;border-radius:5px}
@@ -442,7 +444,8 @@ const R=[
  [5,'신유리','심해','기억과 감정을 다루는 상아탑의 여왕.',true],
  [6,'???','—','행방불명. 정체도 능력도 소문뿐.',false],
  [7,'한도준','불굴','원리 불명의 근성 능력. 시끄럽지만 약자 편.',false]];
-document.getElementById('rank').innerHTML=R.map(r=>{const h=H.find(x=>x.n===r[1]);return `<div class="rrow r${r[0]}"><div class="no">${String(r[0]).padStart(2,'0')}</div><div class="av">${h?`<img src="${img(h,'기본')}" alt="${r[1]}">`:(r[0]===6?'?':'—')}</div><div><h3>${r[1]}<small>「${r[2]}」</small></h3><p>${r[3]}</p></div><span class="tg ${r[4]?'h':''}">${r[4]?'HEROINE':'NPC'}</span></div>`}).join('');
+const NPCIMG={2:'마도경_기본',4:'남궁리아_기본',6:'칠성6위_실루엣',7:'한도준_기본'};const ex=n=>`extra/${encodeURIComponent(n)}.webp`;
+document.getElementById('rank').innerHTML=R.map(r=>{const h=H.find(x=>x.n===r[1]);return `<div class="rrow r${r[0]}"><div class="no">${String(r[0]).padStart(2,'0')}</div><div class="av">${h?`<img src="${img(h,'기본')}" alt="${r[1]}">`:(NPCIMG[r[0]]?`<img src="${ex(NPCIMG[r[0]])}" alt="${r[1]}">`:'—')}</div><div><h3>${r[1]}<small>「${r[2]}」</small></h3><p>${r[3]}</p></div><span class="tg ${r[4]?'h':''}">${r[4]?'HEROINE':'NPC'}</span></div>`}).join('');
 
 // phase
 const P=[[0,'무능력',60,'60% · 지하층. 공공연히 멸시당한다'],[1,'생활급',20,'라이터 대신 불꽃 정도'],[2,'생활급+',10,'일상에서 쓸모 있는 수준'],[3,'실전급',8,'풍기위원 지원 가능'],[4,'병기급',2,'학교의 간판'],[5,'칠성',1,'7명. 개인이 군대 하나']];
@@ -459,7 +462,8 @@ const FA=[
  ['파편','dark','용병 조직','칠성 4위 남궁리아가 이끄는 용병단. 돈이면 누구 편이든 된다.','남궁리아'],
  ['천문(天門)','mys','술법 결사','고대부터 술법서와 술법사를 관리해 온 결사. 학원도시를 "신의 영역을 훔친 도둑"으로 본다.','백설아 · 진유화']];
 const sideCls={sci:'s-sci',mys:'s-mys',stu:'s-stu',dark:'s-dark'};
-document.getElementById('fac').innerHTML=FA.map(f=>`<div class="fcard"><div class="t"><h3>${f[0]}</h3><span class="side ${sideCls[f[1]]}">${f[2]}</span></div><p>${f[3]}</p><div class="mem">▸ ${f[4]}</div></div>`).join('');
+const FIMG={'이사회':'이사장_실루엣','그림자':'그림자_단체','풍기위원회':'풍기위원_순찰','앵커':'앵커_출동','스컬':'스컬_단체','백합회':'학생_엘리트','파편':'남궁리아_거래','천문(天門)':'술법사_단체'};
+document.getElementById('fac').innerHTML=FA.map(f=>`<div class="fcard">${FIMG[f[0]]?`<div class="fim"><img loading="lazy" src="extra/${encodeURIComponent(FIMG[f[0]])}.webp" alt="${f[0]}"></div>`:''}<div class="t"><h3>${f[0]}</h3><span class="side ${sideCls[f[1]]}">${f[2]}</span></div><p>${f[3]}</p><div class="mem">▸ ${f[4]}</div></div>`).join('');
 
 // relation svg
 (function(){

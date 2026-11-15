@@ -89,7 +89,8 @@ const META={세레스티아:["세레스티아",19,"옛 주인 · 제국 제3황�
 let D={heroines:[],bosses:[],monsters:[]};let sec="heroines",who="세레스티아",q="",cur=[],idx=0;
 const $=id=>document.getElementById(id);
 const ord=s=>{const i=ORDER.indexOf(s);return i<0?999:i};
-async function load(){const t=await fetch("https://api.github.com/repos/kimlilim2/famine-assets/git/trees/main?recursive=1").then(r=>r.json());
+async function load(){let t=null;try{const ps=await fetch("files.json?v="+Date.now()).then(r=>r.json());t={tree:ps.map(p=>({path:"summon/"+p}))}}catch(e){}
+ for(let i=0;i<3&&!(t&&t.tree);i++){try{t=await fetch("https://api.github.com/repos/kimlilim2/famine-assets/git/trees/main?recursive=1").then(r=>r.json())}catch(e){await new Promise(r=>setTimeout(r,1200))}}
  const m={heroines:{},bosses:{},monsters:{}};
  for(const it of t.tree){const x=it.path.match(/^summon\/(heroines|bosses|monsters)\/(.+)_(.+)\.webp$/);if(!x)continue;(m[x[1]][x[2]]=m[x[1]][x[2]]||[]).push([x[3],RAW+x[1]+"/"+encodeURIComponent(x[2]+"_"+x[3])+".webp"]);}
  for(const k in m){let names=Object.keys(m[k]);if(k==="heroines")names=HO.filter(n=>m[k][n]);else if(k==="bosses")names=BO.filter(n=>m[k][n]);else names.sort((a,b)=>GO.indexOf(GR[a])-GO.indexOf(GR[b])||a.localeCompare(b,"ko"));D[k]=names.map(n=>[n,m[k][n].sort((a,b)=>ord(a[0])-ord(b[0])||a[0].localeCompare(b[0],"ko"))]);}
